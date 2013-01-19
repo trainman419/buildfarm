@@ -316,7 +316,7 @@ def dry_binarydeb_jobs(stackname, rosdistro, distros, jobgraph):
     )
     jobs = []
     for distro in distros:
-       for arch in ('armel'): # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
+       for arch in ['armel']: # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
             d['ARCH'] = arch
             d['DISTRO'] = distro
 
@@ -340,7 +340,7 @@ def binarydeb_jobs(package, distros, fqdn, jobgraph, ros_package_repo="http://50
     )
     jobs = []
     for distro in distros:
-       for arch in ('armel'): # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
+       for arch in ['armel']: # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
             d['ARCH'] = arch
             d['DISTRO'] = distro
             d["CHILD_PROJECTS"] = calc_child_jobs(package, distro, arch, jobgraph)
