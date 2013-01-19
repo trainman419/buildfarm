@@ -68,7 +68,7 @@ def devel_jobs(vcs_type, uri, version, package, stack, distros, rosdistro, fqdn,
     build_depends = [depends.name for depends in stack.build_depends]
     jobs = []
     for distro in [distros[1]]:  # for now only take one distro
-        for arch in ['amd64']:  # removed 'i386' to build devel only on one arch
+        for arch in ['armel']:  # removed 'i386' to build devel only on one arch
             job_name = devel_job_name(rosdistro, package, distro, arch)
             d['ARCH'] = arch
             d['BUILD_DEPENDS'] = ' '.join(build_depends)

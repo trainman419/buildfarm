@@ -110,7 +110,7 @@ if __name__ == "__main__":
     else:  
         rootdir = tempfile.mkdtemp()
         
-    arches = ['i386', 'amd64']
+    arches = ['armel'] # ['i386', 'amd64']
     distros = ['lucid', 'natty', 'oneiric']
 
 

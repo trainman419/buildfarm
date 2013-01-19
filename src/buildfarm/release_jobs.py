@@ -40,7 +40,7 @@ def compute_missing(distros, fqdn, rosdistro, sourcedeb_only=False):
 
     repo_url = 'http://%s/repos/building' % fqdn
 
-    arches = ['amd64', 'i386']
+    arches = ['armel'] # ['amd64', 'i386']
 
     rd = Rosdistro(rosdistro)
     # We take the intersection of repo-specific targets with default
@@ -272,7 +272,7 @@ def dry_binarydeb_jobs(stackname, rosdistro, distros, jobgraph):
     )
     jobs = []
     for distro in distros:
-        for arch in ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
+        for arch in ['armel']: #  ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
             d['ARCH'] = arch
             d['DISTRO'] = distro
 
@@ -297,7 +297,7 @@ def binarydeb_jobs(package, distros, fqdn, jobgraph, ros_package_repo="http://50
     )
     jobs = []
     for distro in distros:
-        for arch in ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
+        for arch in ['armel']: # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
             d['ARCH'] = arch
             d['DISTRO'] = distro
             d["CHILD_PROJECTS"] = calc_child_jobs(package, distro, arch, jobgraph)

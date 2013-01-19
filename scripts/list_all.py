@@ -129,7 +129,7 @@ if __name__ == "__main__":
         rootdir = tempfile.mkdtemp()
         
 
-    arches = ['i386', 'amd64']
+    arches = ['armel'] # ['i386', 'amd64']
     distros = buildfarm.rosdistro.get_target_distros(args.rosdistro)
 
 
