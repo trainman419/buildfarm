@@ -3,6 +3,10 @@
 from rosdistro import sanitize_package_name, debianize_package_name
 from stack_of_remote_repository import get_stack_of_remote_repository
 
+import os
+import tempfile
+import vcstools
+
 def _get_dependencies(dependency_dict, package_name, package_list, recursive=False):
     dependencies = set(package_list[p] for p in dependency_dict[package_name] if p in package_list)
     if recursive:
@@ -17,6 +21,11 @@ def get_dependencies(workspace, repository_dict, rosdistro):
     packages = {}
     package_urls = {}
 
+    if workspace is None:
+        workspace = tempfile.mkdtemp()
+    if not os.path.isdir(workspace):
+        os.makedirs(workspace)
+
     #print repository_dict
     for name, r in sorted(repository_dict.items()):
         if 'url' not in r:
@@ -24,11 +33,15 @@ def get_dependencies(workspace, repository_dict, rosdistro):
             continue
         url = r['url']
         print "downloading from %s into %s to be able to trace dependencies" % (url, workspace)
+
+        workdir = os.path.join(workspace, name)
+        vcsclient = vcstools.get_vcs_client('git', workdir, cache=True)
+
         version_number = 'release/%s/%s' % (name, r['version'])
         # try getting the release branch
         print '+++ Trying version %s' % version_number
         try:
-            stack = get_stack_of_remote_repository(name, 'git', url, workspace, version_number)
+            stack = get_stack_of_remote_repository(vcsclient, url, workdir, version_number)
         except Exception as e:
             # try getting the release branch without the debian number
             index = version_number.find('-')
@@ -36,12 +49,12 @@ def get_dependencies(workspace, repository_dict, rosdistro):
                 version_number = version_number[:index]
             print '+++ Trying version %s' % version_number
             try:
-                stack = get_stack_of_remote_repository(name, 'git', url, workspace, version_number)
+                stack = get_stack_of_remote_repository(vcsclient, url, workdir, version_number)
             except Exception as e:
                 # try master
                 print '+++ Trying master'
                 try:
-                    stack = get_stack_of_remote_repository(name, 'git', url, workspace)
+                    stack = get_stack_of_remote_repository(vcsclient, url, workdir, 'master')
                 except Exception as e:
                     if rosdistro == 'backports':
                         packages[name] = sanitize_package_name(name)

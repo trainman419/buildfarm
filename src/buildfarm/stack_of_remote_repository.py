@@ -7,17 +7,12 @@ import shutil
 import tempfile
 import vcstools
 
-def get_stack_of_remote_repository(name, type, url, workspace=None, version=None):
-    if workspace is None:
-        workspace = tempfile.mkdtemp()
-    if not os.path.isdir(workspace):
-        os.makedirs(workspace)
-
+def get_stack_of_remote_repository(client, url, workdir, version=None):
     #print('Working on repository "%s" at "%s"...' % (name, url))
 
     # fetch repository
-    workdir = os.path.join(workspace, name)
-    client = vcstools.VcsClient(type, workdir)
+    #workdir = os.path.join(workspace, name)
+    #client = vcstools.get_vcs_client(type, workdir)
     is_good = False
     if client.path_exists():
         if client.get_url() == url:
@@ -34,6 +29,6 @@ def get_stack_of_remote_repository(name, type, url, workspace=None, version=None
     # parse stack.xml
     stack_xml_path = os.path.join(workdir, 'stack.xml')
     if not os.path.isfile(stack_xml_path):
-        raise IOError('No stack.xml found in repository "%s" at "%s"; skipping' % (name, url))
+        raise IOError('No stack.xml found in repository at "%s"; skipping' % (url))
 
     return rospkg.stack.parse_stack_file(stack_xml_path)
