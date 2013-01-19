@@ -41,7 +41,7 @@ class VcsFileCache(object):
         name = simplify_repo_name(repo_url)
         repo_path = os.path.join(self._cache_location, name)
         #client = VcsClient(repo_type, repo_path)
-        client = GitClient(repo_path)  # using git only
+        client = GitClient(repo_path, cache=True)  # using git only
         if client.path_exists():
             updated = False
             if client.get_url() == repo_url:
