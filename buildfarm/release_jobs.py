@@ -70,7 +70,7 @@ def compute_missing(distros, fqdn, rosdistro):
     # it's not specified, then read targets.yaml.
     default_distros = distros or fetch_distros_from_yaml(rosdistro)
 
-    arches = ['amd64', 'i386']
+    arches = ['armel'] # ['amd64', 'i386']
 
     missing_wet = get_missing_wet_packages(repo_map, default_distros, rosdistro, repo_url, arches)
     missing_dry = get_missing_dry_packages(rosdistro, default_distros, arches, repo_url)
@@ -316,7 +316,7 @@ def dry_binarydeb_jobs(stackname, rosdistro, distros, jobgraph):
     )
     jobs = []
     for distro in distros:
-        for arch in ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
+       for arch in ('armel'): # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
             d['ARCH'] = arch
             d['DISTRO'] = distro
 
@@ -340,7 +340,7 @@ def binarydeb_jobs(package, distros, fqdn, jobgraph, ros_package_repo="http://50
     )
     jobs = []
     for distro in distros:
-        for arch in ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
+       for arch in ('armel'): # ('i386', 'amd64'):  # removed 'armel' as it as qemu debootstrap is segfaulting
             d['ARCH'] = arch
             d['DISTRO'] = distro
             d["CHILD_PROJECTS"] = calc_child_jobs(package, distro, arch, jobgraph)

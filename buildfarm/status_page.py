@@ -42,7 +42,7 @@ def get_ros_repo_names(ros_repos):
 def get_da_strs(distro_arches):
     return [get_dist_arch_str(d, a) for d, a in distro_arches]
 
-bin_arches = ['amd64', 'i386']
+bin_arches = ['armel'] # ['amd64', 'i386']
 
 def get_distro_arches(arches, rosdistro):
     distros = buildfarm.rosdistro.get_target_distros(rosdistro)
