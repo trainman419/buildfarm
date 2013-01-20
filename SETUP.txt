@@ -1,0 +1,25 @@
+How to set up your own ROS build farm.
+
+These instructions outline what needs to be done to set up a Jenkins server to build debs for ROS. This is a first draft and is probably incomplete.
+
+Current OS: Ubuntu Precise 12.04.1
+
+On the Jenkins master machine:
+ * Install jenkins and set up a basic user with full admin access.
+ * Install python-vcstools
+ * Create a rosbuild user
+  * In the rosbuild user's home directory, do 'git clone git@github.com:ros-infrastructure/reprepro-updater.git reprepro_updater'
+  * In the rosbuild user's home directory, so 'git clone git@github.com:willowgarage/catkin-debs.git'
+  * In the catkin-debs directory, set up your server.yaml with the jenkins instance URL, username and password
+  * FIXME: run setup.py in catkin-debs
+ * Create the building repository:
+  * mkdir -p /var/www/repos/building
+  * chown -R rosbuild:rosbuild /var/www/repos/building
+  * Untar the sample repository configuration into /var/www/repos/building/conf and modify to suit
+  * Set up a GPG signing key for your repository: http://wiki.debian.org/SettingUpSignedAptRepositoryWithReprepro
+  * Add the repo signing key to all of the build machines: sudo apt-key add <file>
+ * Generate jobs
+  * cd catkin-debs
+  * run ./scripts/create_release_jobs.py and supply the appropriate arguments
+ * Trigger the build
+  * catkin-debs/scripts/trigger_missing.py
