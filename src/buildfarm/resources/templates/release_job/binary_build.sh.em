@@ -33,10 +33,14 @@ else
     debootstrap_type='debootstrap'
 fi
 
-
-sudo apt-get update
-sudo apt-get install -y pbuilder python-empy python-argparse debhelper # todo move to server setup, or confirm it's there
-sudo apt-get install -y qemu-arm-static # on precise it's now qemu-user-static I believe
+for DEP in pbuilder python-empy debhelper qemu-user-static
+do
+   if ! dpkg -s $DEP | grep installed >/dev/null
+   then
+      echo "ERROR: $DEP is not installed"
+      exit 1
+   fi
+done
 
 if [ -e $WORKSPACE/catkin-debs ]
 then
@@ -52,7 +56,7 @@ cd $WORKSPACE/catkin-debs
 #setup the cross platform apt environment
 # using sudo since this is shared with pbuilder and if pbuilder is interupted it will leave a sudo only lock file.  Otherwise sudo is not necessary. 
 # And you can't chown it even with sudo and recursive 
-sudo PYTHONPATH=$PYTHONPATH $WORKSPACE/catkin-debs/scripts/setup_apt_root.py $distro $arch $rootdir --local-conf-dir $WORKSPACE --mirror $mirror
+sudo PYTHONPATH=$PYTHONPATH $WORKSPACE/catkin-debs/scripts/setup_apt_root.py $distro $arch $rootdir --local-conf-dir $WORKSPACE --mirror $mirror --repo "ros@@http://$ROS_REPO_FQDN/repos/building"
 
 # Check if this package exists, and call update which will update the cache, following calls don't need to update
 #if [ -e $WORKSPACE/catkin-debs/scripts/jenkins/apt_env/check_package_built.py $rootdir $PACKAGE -u ]
@@ -63,7 +67,7 @@ sudo PYTHONPATH=$PYTHONPATH $WORKSPACE/catkin-debs/scripts/setup_apt_root.py $di
 
 
 # update apt update
-sudo apt-get update -c $aptconffile -o Apt::Architecture=$arch
+sudo apt-get update -c $aptconffile -o Apt::Architecture=$arch @(ARCH == 'armel' ? "-o Apt::Architectures::=armel")
 
 # check precondition that all dependents exist, don't check if no dependencies
 @[if DEPENDENTS]
@@ -139,7 +143,7 @@ scp -r $output_dir/*$distro* rosbuild@@$ROS_REPO_FQDN:$UPLOAD_DIR
 ssh rosbuild@@$ROS_REPO_FQDN -- PYTHONPATH=/home/rosbuild/reprepro_updater/src python /home/rosbuild/reprepro_updater/scripts/include_folder.py -d $distro -a $arch -f $UPLOAD_DIR -p $PACKAGE -c --delete --invalidate
 
 # update apt again
-sudo apt-get update -c $aptconffile -o Apt::Architecture=$arch
+sudo apt-get update -c $aptconffile -o Apt::Architecture=$arch @(ARCH == 'armel' ? "-o Apt::Architectures::=armel")
 
 # check that the uploaded successfully
 sudo $WORKSPACE/catkin-debs/scripts/assert_package_present.py $rootdir $aptconffile  $PACKAGE
