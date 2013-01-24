@@ -1,0 +1,6 @@
+Name: opennippa
+Method: http://ppa.launchpad.net/v-launchpad-jochen-sprickerhof-de/pcl/ubuntu
+Suite: quantal
+Components: main
+Architectures: amd64
+FilterFormula: Package (% libopenni* )

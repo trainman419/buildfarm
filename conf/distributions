@@ -1,0 +1,60 @@
+Origin: ROS
+Label: ROS lucid
+Codename: lucid
+Suite: lucid
+Architectures: amd64 i386 armel source
+Components: main
+Description: ROS lucid Debian Repository
+SignWith: <key>
+Update: opennippa
+
+Origin: ROS
+Label: ROS maverick
+Codename: maverick
+Suite: maverick
+Architectures: amd64 i386 armel source
+Components: main
+Description: ROS maverick Debian Repository
+SignWith: <key>
+Update: opennippa
+
+Origin: ROS
+Label: ROS natty
+Codename: natty
+Suite: natty
+Architectures: amd64 i386 armel source
+Components: main
+Description: ROS natty Debian Repository
+SignWith: <key>
+Update: opennippa
+
+Origin: ROS
+Label: ROS oneiric
+Codename: oneiric
+Suite: oneiric
+Architectures: amd64 i386 armel source
+Components: main
+Description: ROS oneiric Debian Repository
+SignWith: <key>
+Update: opennippa
+
+Origin: ROS
+Label: ROS precise
+Codename: precise
+Suite: precise
+Architectures: amd64 i386 armel source
+Components: main
+Description: ROS precise Debian Repository
+SignWith: <key>
+Update: opennippa
+
+Origin: ROS
+Label: ROS quantal
+Codename: quantal
+Suite: quantal
+Architectures: amd64 i386 armel source
+Components: main
+Description: ROS quantal Debian Repository
+SignWith: <key>
+Update: opennippa
+

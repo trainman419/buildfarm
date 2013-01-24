@@ -1,0 +1,36 @@
+Name: quantal
+IncomingDir: queue/quantal
+TempDir: tmp
+Allow: quantal unstable>quantal
+Cleanup: on_deny on_error
+
+Name: precise
+IncomingDir: queue/precise
+TempDir: tmp
+Allow: precise unstable>precise
+Cleanup: on_deny on_error
+
+Name: oneiric
+IncomingDir: queue/oneiric
+TempDir: tmp
+Allow: oneiric unstable>oneiric
+Cleanup: on_deny on_error
+
+Name: natty
+IncomingDir: queue/natty
+TempDir: tmp
+Allow: natty unstable>natty
+Cleanup: on_deny on_error
+
+Name: lucid
+IncomingDir: queue/lucid
+TempDir: tmp
+Allow: lucid unstable>lucid
+Cleanup: on_deny on_error
+
+Name: all
+IncomingDir: queue/all
+TempDir: tmp
+Allow: lucid oneiric precise quantal
+Cleanup: on_deny on_error
+Options: multiple_distributions
