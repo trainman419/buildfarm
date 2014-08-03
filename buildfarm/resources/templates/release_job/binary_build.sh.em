@@ -29,7 +29,12 @@ work_dir=$WORKSPACE/work
 
 if [ $arch == armel ] || [ $arch == armhf ]
 then
-    mirror=http://ports.ubuntu.com/ubuntu-ports
+    if [ $distro == quantal ] || [ $distro == raring ]
+    then
+        mirror=http://old-releases.ubuntu.com/ubuntu
+    else
+        mirror=http://ports.ubuntu.com/ubuntu-ports
+    fi
     debootstrap_type='qemu-debootstrap'
 else
     debootstrap_type='debootstrap'

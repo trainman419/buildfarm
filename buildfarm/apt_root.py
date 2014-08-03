@@ -92,7 +92,10 @@ def setup_apt_rootdir(rootdir,
             else:
                 repo = 'http://us.archive.ubuntu.com/ubuntu/'
         else:
-            repo = 'http://ports.ubuntu.com/ubuntu-ports/'
+            if distro in [ 'quantal', 'raring' ]:
+                repo = 'http://old-releases.ubuntu.com/ubuntu/'
+            else:
+                repo = 'http://ports.ubuntu.com/ubuntu-ports/'
     else:
         repo = mirror
     set_default_sources(rootdir, distro, repo)
