@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import sys
 import argparse
 import jenkins
 import pprint
@@ -75,6 +76,7 @@ def trigger_if_necessary(da, pkg, rosdistro,
 
 if __name__ == '__main__':
     args = parse_options()
+    sys.stdout.flush()
 
     missing = release_jobs.compute_missing(
         args.distros,
@@ -82,11 +84,14 @@ if __name__ == '__main__':
         args.fqdn,
         rosdistro=args.rosdistro,
         sourcedeb_only=args.sourcedeb_only)
+    sys.stdout.flush()
 
     print('')
     print('Missing packages:')
+    sys.stdout.flush()
     pp = pprint.PrettyPrinter()
     pp.pprint(missing)
+    sys.stdout.flush()
 
     if args.commit:
         jenkins_instance = jenkins_support.JenkinsConfig_to_handle(jenkins_support.load_server_config_file(jenkins_support.get_default_catkin_debs_config()))
@@ -104,6 +109,7 @@ if __name__ == '__main__':
         print('')
         print('Missing packages by arch:')
         pp.pprint(missing_by_arch)
+        sys.stdout.flush()
 
         triggered = 0
         skipped = 0
@@ -111,6 +117,7 @@ if __name__ == '__main__':
             for pkg in sorted(missing_by_arch[da]):
                 try:
                     success = trigger_if_necessary(da, pkg, args.rosdistro, jenkins_instance, missing_by_arch)
+                    sys.stdout.flush()
                     if success:
                         triggered += 1
                     else:
@@ -122,3 +129,4 @@ if __name__ == '__main__':
 
     else:
         print('This was not pushed to the server.  If you want to do so use "--commit" to do it for real.')
+    sys.stdout.flush()
