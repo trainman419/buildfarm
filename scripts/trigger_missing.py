@@ -124,6 +124,7 @@ if __name__ == '__main__':
                         skipped += 1
                 except Exception as ex:
                     print("Failed to trigger package '%s' on arch '%s': %s" % (pkg, da, ex))
+                    sys.stdout.flush()
 
         print('Triggered %d jobs, skipped %d jobs.' % (triggered, skipped))
 
