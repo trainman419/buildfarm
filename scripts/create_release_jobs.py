@@ -3,6 +3,7 @@
 from __future__ import print_function
 import argparse
 import os
+import sys
 import tempfile
 import urllib2
 
@@ -91,6 +92,7 @@ def doit(rd, distros, arches, apt_target_repository, fqdn, jobs_graph, rosdistro
         #    target_distros = list(set(r['target']) & set(default_distros))
 
         print('Configuring WET repo "%s" at "%s" for "%s"' % (r.name, r.url, target_distros))
+        sys.stdout.flush()
 
         for p in sorted(r.packages.iterkeys()):
             if not r.version:
@@ -115,6 +117,7 @@ def doit(rd, distros, arches, apt_target_repository, fqdn, jobs_graph, rosdistro
                                                   ssh_key_id=ssh_key_id)
             #time.sleep(1)
             #print ('individual results', results[pkg_name])
+            sys.stdout.flush()
 
     if args.wet_only:
         print("wet only selected, skipping dry and delete")
@@ -149,6 +152,7 @@ def doit(rd, distros, arches, apt_target_repository, fqdn, jobs_graph, rosdistro
                 continue
             results[rd.debianize_package_name(s)] = release_jobs.dry_doit(s, dry_maintainers[s], default_distros, target_arches, fqdn, rosdistro, jobgraph=jobs_graph, commit=commit, jenkins_instance=jenkins_instance, jenkins_jobs=jenkins_jobs, packages_for_sync=packages_for_sync, ssh_key_id=ssh_key_id)
             #time.sleep(1)
+            sys.stdout.flush()
 
     # special metapackages job
     if not whitelist_repos or 'metapackages' in whitelist_repos:
@@ -176,6 +180,7 @@ def doit(rd, distros, arches, apt_target_repository, fqdn, jobs_graph, rosdistro
             if commit:
                 jenkins_instance.delete_job(j)
                 print('Deleted job "%s"' % j)
+            sys.stdout.flush()
 
     return results
 
@@ -184,6 +189,7 @@ if __name__ == '__main__':
     args = parse_options()
 
     print('Loading rosdistro %s' % args.rosdistro)
+    sys.stdout.flush()
 
     workspace = args.repo_workspace
     if not workspace:

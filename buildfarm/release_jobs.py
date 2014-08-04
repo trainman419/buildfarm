@@ -264,6 +264,7 @@ def create_jenkins_job(jobname, config, jenkins_instance, jenkins_jobs):
 
         else:
             jenkins_instance.create_job(jobname, config)
+        sys.stdout.flush()
         return True
     except jenkins.JenkinsException as ex:
         print('Failed to configure "%s" with error: %s' % (jobname, ex), file=sys.stderr)
