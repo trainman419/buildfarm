@@ -104,7 +104,14 @@ then
     --debootstrapopts --arch=$arch \
     --debootstrapopts --keyring=/etc/apt/trusted.gpg
 else
-  sudo pbuilder --update --basetgz $basetgz
+  # if the environment hasn't been updated in a while, update it
+  #  4 hours seems reasonable
+  if [ `stat --format=%Y $basetgz` -le $(( `date +%s` - 60*60*4 )) ]
+  then
+    sudo pbuilder --update --basetgz $basetgz
+  else
+    echo "pbuilder tgz is not outdated; not updating it"
+  fi
 fi
 
 
