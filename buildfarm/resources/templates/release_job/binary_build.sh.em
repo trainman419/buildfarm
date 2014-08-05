@@ -17,7 +17,6 @@ base=/var/cache/pbuilder-$distro-$arch
 aptconffile=$WORKSPACE/apt.conf
 
 #increment this value if you have changed something that will invalidate base tarballs. #TODO this will need cleanup eventually.
-export EXTRAPACKAGES="distcc cmake debhelper"
 basetgz_version=9
 
 rootdir=$base/apt-conf-$basetgz_version
@@ -103,7 +102,8 @@ then
     --keyring /etc/apt/trusted.gpg \
     --debootstrap $debootstrap_type \
     --debootstrapopts --arch=$arch \
-    --debootstrapopts --keyring=/etc/apt/trusted.gpg
+    --debootstrapopts --keyring=/etc/apt/trusted.gpg \
+    --extrapackages "distcc debhelper cmake"
 else
   # if the environment hasn't been updated in a while, update it
   #  4 hours seems reasonable
