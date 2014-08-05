@@ -128,6 +128,11 @@ cat debian/changelog
 " >> hooks/A50stamp
 chmod +x hooks/A50stamp
 
+echo "#!/bin/bash -ex
+apt-get update
+" >> hooks/D10apt-update
+chmod +x hooks/D10apt-update
+
 #  --binary-arch even if "any" type debs produce arch specific debs
 sudo pbuilder  --build \
     --basetgz $basetgz \
